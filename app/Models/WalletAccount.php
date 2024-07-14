@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\Types\WalletAccountTypes;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use NumberFormatter;
 
 class WalletAccount extends Model
 {
@@ -21,5 +24,19 @@ class WalletAccount extends Model
 
     public function transactions() {
         return $this->hasMany(Transaction::class);
+    }
+
+    /***** Mutator and Accessor ******/
+    public function name(): Attribute {
+        return Attribute::make(
+            get: fn () => WalletAccountTypes::getList()[$this->type]['name'] ?? '',
+        );
+    }
+
+    public function balanceCurrency(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => number_format($this->balance) . ' VND',
+        );
     }
 }
