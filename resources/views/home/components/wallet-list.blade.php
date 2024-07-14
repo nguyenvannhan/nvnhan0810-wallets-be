@@ -9,13 +9,10 @@
             <div class="swiper-wrapper">
                 @foreach($wallets as $wallet)
                 <div class="swiper-slide h-auto">
-                    <div class="card p-0 h-100">
+                    <a href="{{ route('wallets.show', $wallet->id) }}" class="card p-0 h-100 text-decoration-none d-block">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
                                 <h5 class="fw-bold fs-6">{{ $wallet->name }}</h5>
-                                <a href="{{ route('wallets.edit', $wallet->id) }}">
-                                    <i class="fa-solid fa-pen fs-6"></i>
-                                </a>
                             </div>
 
                             <hr />
@@ -29,7 +26,7 @@
                             </div>
                             @endforeach
                         </div>
-                    </div>
+                    </a>
                 </div>
                 @endforeach
             </div>

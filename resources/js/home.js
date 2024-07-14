@@ -9,7 +9,9 @@ import 'swiper/css/bundle';
 const swiper = new Swiper('#wallet-swiper', {
     // Optional parameters
     loop: true,
-    // autoplay: true,
+    autoplay: true,
+
+    spaceBetween: 20,
 
     // If we need pagination
     pagination: {

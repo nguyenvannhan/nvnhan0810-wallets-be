@@ -26,6 +26,15 @@ class WalletController extends Controller
         ]);
     }
 
+    public function show(Wallet $wallet)
+    {
+        $wallet->load(['walletAccounts']);
+
+        return view('wallet.show', [
+            'wallet' => $wallet,
+        ]);
+    }
+
     public function create()
     {
         $accounts = WalletAccountTypes::getList();
@@ -42,8 +51,6 @@ class WalletController extends Controller
         if ($accounts->count() !== $accounts->unique()->count()) {
             throw ValidationException::withMessages(['Account types must be unique']);
         }
-
-
 
         $this->walletService->createWallet($request->validated());
 
