@@ -8,10 +8,10 @@
 html, body {
     background-color: #BEBEBE;
     min-height: 100svh;
+    min-height: -webkit-fill-available;
     width: 100svw;
     display: flex;
     font-family: 'Nunito', sans-serif;
-    min-height: -webkit-fill-available;
 }
 
 
@@ -21,6 +21,7 @@ footer {
     -webkit-box-shadow: 0px -2px 2px 0px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0px -2px 2px 0px rgba(0, 0, 0, 0.1);
     box-shadow: 0px -2px 2px 0px rgba(0, 0, 0, 0.1);
+    padding-bottom: 2px;
 
     .footer-item {
         display: flex;
