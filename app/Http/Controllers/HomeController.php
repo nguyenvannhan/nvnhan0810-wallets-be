@@ -14,7 +14,7 @@ class HomeController extends Controller
 
         $latestTransactions = Transaction::with(['walletAccount.wallet'])->latest()->take(5)->get();
 
-        return view('home', [
+        return view('home.index', [
             'wallets' => $wallets,
             'latestTransactions' => $latestTransactions,
         ]);
