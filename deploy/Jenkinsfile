@@ -12,7 +12,7 @@ pipeline {
             steps {
                 sh 'cp ./deploy/.env.prod .env'
                 sh 'sed -i "s/APP_KEY=example/APP_KEY=$APP_KEY_CRED/g" .env'
-                sh 'sed -i "s/DB_PASSWORD=example/DB_PASSWORD=$GOOGLE_CLIENT_ID_CRED/g" .env'
+                sh 'sed -i "s/DB_PASSWORD=example/DB_PASSWORD=$MYSQL_PASSWORD_CRED/g" .env'
                 sh 'sed -i "s/GOOGLE_CLIENT_ID=example/GOOGLE_CLIENT_ID=$MYSQL_PASSWORD_CRED/g" .env'
                 sh 'sed -i "s/GOOGLE_SECRET=example/GOOGLE_SECRET=$GOOGLE_CLIENT_SECRET_CRED/g" .env'
 
