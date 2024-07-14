@@ -36,10 +36,10 @@
             <div id="type-groups" class="mb-4">
                 <label class="form-label">Accounts</label>
 
-                @foreach($wallet->walletAccounts as $keyAccount => $account)
-                <input type="hidden" name="accounts[{{ $keyAccount }}][id]" value="{{ $account->id }}" />
                 <div id="type-group-list">
-                    <div id="type-group-0" class="type-group border rounded p-2 mb-2">
+                    @foreach($wallet->walletAccounts as $keyAccount => $account)
+                    <input type="hidden" name="accounts[{{ $keyAccount }}][id]" value="{{ $account->id }}" />
+                    <div id="type-group-{{ $keyAccount }}" class="type-group border rounded p-2 mb-2">
                         <div class="mb-4">
                             <label for="type" class="form-label">Types</label>
                             <select id="type" name="accounts[{{ $keyAccount }}][type]" class="form-select account-type-select">
@@ -53,8 +53,8 @@
                             <input type="number" class="form-control" name="accounts[{{ $keyAccount }}][balance]" value="{{ $account->balance }}" />
                         </div>
                     </div>
+                    @endforeach
                 </div>
-                @endforeach
 
                 <button type="button" id="add-account" class="btn btn-link" count="{{ $wallet->walletAccounts->count() }}">Add Account</button>
             </div>

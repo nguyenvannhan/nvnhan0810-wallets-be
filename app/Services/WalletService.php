@@ -43,12 +43,17 @@ class WalletService {
             $dbAccounts = $wallet->walletAccounts;
 
             foreach ($data['accounts'] as $account) {
-                $dbAccount = $dbAccounts->where('type', $account['type'])->first();
+                $dbAccount = null;
+
+                if (isset($account['id'])) {
+                    $dbAccount = $dbAccounts->find($account['id']);
+                }
 
                 if (!$dbAccount) {
                     $accounts[] = WalletAccount::create([
                         'wallet_id' => $wallet->id,
                         'type' => $account['type'],
+                        'balance' => $account['balance'],
                     ]);
                 } else {
                     if ($dbAccount->balance != $account['balance']) {
@@ -58,10 +63,11 @@ class WalletService {
                             'type' => $account['balance'] > $dbAccount->balance ? TransactionTypes::TYPE_INCOME : TransactionTypes::TYPE_EXPENSE,
                             'description' => 'Cân đối Ví',
                         ]);
-
-                        $dbAccount->balance = $account['balance'];
-                        $dbAccount->save();
                     }
+
+                    $dbAccount->balance = $account['balance'];
+                    $dbAccount->type = $account['type'];
+                    $dbAccount->save();
                 }
             }
 
@@ -72,6 +78,8 @@ class WalletService {
                     'amount' => abs($account->balance),
                     'type' => $account->balance > 0 ? TransactionTypes::TYPE_INCOME : TransactionTypes::TYPE_EXPENSE,
                     'description' => 'Tạo mới Ví',
+                    'created_at' => now(),
+                    'updated_at' => now(),
                 ];
             }
 
