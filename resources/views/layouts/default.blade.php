@@ -21,7 +21,7 @@
 </head>
 
 <body>
-    <div class="{{ request()->route()->getName() !== 'index' ? 'mb-5' : '' }}">
+    <div class="d-flex w-100 {{ request()->route()->getName() !== 'index' ? 'mb-5' : '' }}">
         @yield('content')
     </div>
 

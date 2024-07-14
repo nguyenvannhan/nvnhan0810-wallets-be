@@ -3,8 +3,6 @@
 @section('content')
 <div class="container py-4">
     <div class="text-center mb-5">
-        <a href="{{ route('transactions.create') }}" class="btn btn-success w-100 mb-4">Tạo giao dịch</a>
-
         <table class="table table-bordered table-striped">
             @foreach($latestTransactions as $transaction)
             <tr>
@@ -56,13 +54,6 @@
             </div>
             @endforeach
         </div>
-    </div>
-
-    <div class="text-center">
-        <form action="{{ route('logout') }}" method="POST">
-            @csrf()
-            <button type="submit" class="btn btn-danger btn-sm">Logout</button>
-        </form>
     </div>
 </div>
 @endsection

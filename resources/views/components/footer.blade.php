@@ -24,7 +24,7 @@
         </a>
     </div>
     <div>
-        <a href="{{ route('home') }}" class="footer-item">
+        <a href="{{ route('profile.index') }}" class="footer-item">
             <i class="fa-solid fa-user"></i>
             <span>Profile</span>
         </a>

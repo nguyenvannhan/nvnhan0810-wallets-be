@@ -29,6 +29,12 @@ class AuthController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
             ]);
+        } else {
+            if ($user->avatar !== $dbUser->avatar) {
+                $dbUser->avatar = $user->avatar;
+
+                $dbUser->save();
+            }
         }
 
         Auth::login($dbUser, true);
