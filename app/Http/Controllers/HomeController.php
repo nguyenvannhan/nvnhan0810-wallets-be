@@ -12,7 +12,7 @@ class HomeController extends Controller
     {
         $wallets = Wallet::with('walletAccounts')->get();
 
-        $latestTransactions = Transaction::latest()->take(5)->get();
+        $latestTransactions = Transaction::with(['walletAccount.wallet'])->latest()->take(5)->get();
 
         return view('home', [
             'wallets' => $wallets,

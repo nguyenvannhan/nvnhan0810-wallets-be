@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Wallet\CreateWalletRequest;
+use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\WalletService;
 use App\Types\WalletAccountTypes;
@@ -20,9 +21,11 @@ class WalletController extends Controller
     public function index()
     {
         $wallets = Wallet::with('walletAccounts')->get();
+        $latestTransactions = Transaction::with(['walletAccount.wallet'])->latest()->take(5)->get();
 
         return view('wallet.index', [
-            'wallets' => $wallets
+            'wallets' => $wallets,
+            'latestTransactions' => $latestTransactions,
         ]);
     }
 

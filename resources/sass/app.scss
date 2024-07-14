@@ -12,3 +12,26 @@ html, body {
     display: flex;
     font-family: 'Nunito', sans-serif;
 }
+
+
+footer {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    -webkit-box-shadow: 0px -2px 2px 0px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0px -2px 2px 0px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px -2px 2px 0px rgba(0, 0, 0, 0.1);
+
+    .footer-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        padding: 0.5rem 0;
+        color: #94AFB6;
+
+        span {
+            font-size: 11px;
+        }
+    }
+}

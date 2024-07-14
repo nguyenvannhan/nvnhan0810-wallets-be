@@ -18,7 +18,13 @@
 </head>
 
 <body>
-    @yield('content')
+    <div class="{{ request()->route()->getName() !== 'index' ? 'mb-5' : '' }}">
+        @yield('content')
+    </div>
+
+    @if(request()->route()->getName() !== 'index')
+        @include('components.footer')
+    @endif
 
     @yield('scripts')
 </body>

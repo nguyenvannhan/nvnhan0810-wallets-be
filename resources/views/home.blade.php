@@ -3,7 +3,7 @@
 @section('content')
 <div class="container py-4">
     <div class="text-center mb-5">
-        <a href="{{ route('transactions.create') }}" class="btn btn-success w-100 my-4">Tạo giao dịch</a>
+        <a href="{{ route('transactions.create') }}" class="btn btn-success w-100 mb-4">Tạo giao dịch</a>
 
         <table class="table table-bordered table-striped">
             @foreach($latestTransactions as $transaction)
