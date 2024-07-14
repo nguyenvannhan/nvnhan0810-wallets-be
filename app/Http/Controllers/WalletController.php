@@ -6,6 +6,7 @@ use App\Http\Requests\Wallet\CreateWalletRequest;
 use App\Models\Wallet;
 use App\Services\WalletService;
 use App\Types\WalletAccountTypes;
+use Illuminate\Validation\ValidationException;
 
 class WalletController extends Controller
 {
@@ -36,6 +37,14 @@ class WalletController extends Controller
 
     public function store(CreateWalletRequest $request)
     {
+        $accounts = collect($request->accounts)->pluck('type');
+
+        if ($accounts->count() !== $accounts->unique()->count()) {
+            throw ValidationException::withMessages(['Account types must be unique']);
+        }
+
+
+
         $this->walletService->createWallet($request->validated());
 
         return redirect()->route('wallets.index');

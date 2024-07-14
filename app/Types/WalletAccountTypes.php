@@ -9,6 +9,12 @@ class WalletAccountTypes {
         return [
             'default' => [
                 'name' => 'Tài khoản Thanh Toán',
+            ],
+            'debit' => [
+                'name' => 'Tài khoản ghi nợ',
+            ],
+            'credit' => [
+                'name' => 'Tài khoản tín dụng',
             ]
         ];
     }

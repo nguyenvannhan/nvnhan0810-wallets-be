@@ -17,10 +17,11 @@ class WalletService {
 
             $accounts = [];
 
-            foreach($data['types'] as $type) {
+            foreach($data['accounts'] as $account) {
                 $accounts[] = [
                     'wallet_id' => $wallet->id,
-                    'type' => $type,
+                    'type' => $account['type'],
+                    'balance' => $account['balance'],
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
