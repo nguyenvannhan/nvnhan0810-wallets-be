@@ -5,7 +5,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Laravel</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+
+    <title>Nvnhan's Wallet</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +26,7 @@
     </div>
 
     @if(request()->route()->getName() !== 'index')
-        @include('components.footer')
+    @include('components.footer')
     @endif
 
     @yield('scripts')
