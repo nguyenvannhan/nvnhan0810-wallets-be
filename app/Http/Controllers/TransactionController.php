@@ -22,7 +22,11 @@ class TransactionController extends Controller
         $this->transactionService = $transactionService;
     }
 
-    public function index(Request $request) {
+    public function index() {
+        return view('transaction.index');
+    }
+
+    public function loadData(Request $request) {
         $isLoop = false;
         $filters = [];
         do {
@@ -32,7 +36,7 @@ class TransactionController extends Controller
                 $filters = $request->all();
             }
 
-            $transactions = Transaction::filter($filters)->get();
+            $transactions = Transaction::filter($filters)->orderBy('created_at', 'DESC')->get();
 
             $hasMore = Transaction::filter([
                 'end_date' => $filters['start_date'],

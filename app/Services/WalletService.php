@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Models\WalletAccount;
+use App\Types\TransactionTypes;
 use App\Types\WalletAccountTypes;
 use Illuminate\Support\Facades\DB;
 
@@ -38,26 +40,44 @@ class WalletService {
             $wallet->save();
 
             $accounts = [];
-            $deletedIds = [];
             $dbAccounts = $wallet->walletAccounts;
 
-            foreach ($data['types'] as $type) {
-                $dbAccount = $dbAccounts->where('type', $type)->first();
+            foreach ($data['accounts'] as $account) {
+                $dbAccount = $dbAccounts->where('type', $account['type'])->first();
 
                 if (!$dbAccount) {
-                    $deletedIds = [$dbAccount->id];
-                } else {
-                    $accounts[] = [
+                    $accounts[] = WalletAccount::create([
                         'wallet_id' => $wallet->id,
-                        'type' => $type,
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ];
+                        'type' => $account['type'],
+                    ]);
+                } else {
+                    if ($dbAccount->balance != $account['balance']) {
+                        Transaction::create([
+                            'wallet_account_id' => $dbAccount->id,
+                            'amount' => abs($account['balance'] - $dbAccount->balance),
+                            'type' => $account['balance'] > $dbAccount->balance ? TransactionTypes::TYPE_INCOME : TransactionTypes::TYPE_EXPENSE,
+                            'description' => 'Cân đối Ví',
+                        ]);
+
+                        $dbAccount->balance = $account['balance'];
+                        $dbAccount->save();
+                    }
                 }
             }
 
-            WalletAccount::insert($accounts);
-            WalletAccount::whereIn('id', $deletedIds)->delete();
+            $transactions = [];
+            foreach($accounts as $account) {
+                $transactions[] = [
+                    'wallet_account_id' => $account->id,
+                    'amount' => abs($account->balance),
+                    'type' => $account->balance > 0 ? TransactionTypes::TYPE_INCOME : TransactionTypes::TYPE_EXPENSE,
+                    'description' => 'Tạo mới Ví',
+                ];
+            }
+
+            if (count($transactions)) {
+                Transaction::insert($transactions);
+            }
         });
     }
 }

@@ -10,7 +10,7 @@
 @endsection
 
 @section('content')
-<main class="container d-flex">
+<main class="container d-flex m-4 bg-white rounded-4 py-4">
     <div class="main-content">
         <h1 class="text-center">Create Wallet</h1>
 
@@ -36,7 +36,7 @@
                 <label class="form-label">Accounts</label>
 
                 <div id="type-group-list">
-                    <div id="type-group-0" class="type-group border rounded px-2 mb-2">
+                    <div id="type-group-0" class="type-group border rounded p-2 mb-2">
                         <div class="mb-4">
                             <label for="type" class="form-label">Types</label>
                             <select id="type" name="accounts[0][type]" class="form-select account-type-select">
@@ -45,7 +45,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="flex mb-4">
+                        <div class="flex">
                             <label for="type" class="form-label">Balance</label>
                             <input type="number" class="form-control" name="accounts[0][balance]" value="0" />
                         </div>
@@ -75,14 +75,14 @@
         });
 
         document.getElementById('type-group-list').insertAdjacentHTML('beforeend', `
-            <div id="type-group-${count}" class="type-group border rounded px-2 mb-2">
+            <div id="type-group-${count}" class="type-group border rounded p-2 mb-2">
                 <div class="mb-4">
                     <label for="type" class="form-label">Types</label>
                     <select id="type" name="accounts[${count}][type]" class="form-select">
                         ${optionHtml}
                     </select>
                 </div>
-                <div class="flex mb-4">
+                <div class="flex">
                     <label for="type" class="form-label">Balance</label>
                     <input type="number" class="form-control" name="accounts[${count}][balance]" value="0" />
                 </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Wallet\CreateWalletRequest;
+use App\Http\Requests\Wallet\UpdateWalletRequest;
 use App\Models\Wallet;
 use App\Services\WalletService;
 use App\Types\WalletAccountTypes;
@@ -70,10 +71,16 @@ class WalletController extends Controller
         ]);
     }
 
-    public function update(Wallet $wallet, CreateWalletRequest $request)
+    public function update(Wallet $wallet, UpdateWalletRequest $request)
     {
+        $accounts = collect($request->accounts)->pluck('type');
+
+        if ($accounts->count() !== $accounts->unique()->count()) {
+            throw ValidationException::withMessages(['Account types must be unique']);
+        }
+
         $this->walletService->updateWallet($wallet, $request->validated());
 
-        return redirect()->route('wallets.index');
+        return redirect()->route('wallets.show', $wallet->id);
     }
 }

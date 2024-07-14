@@ -20,6 +20,7 @@ Route::middleware('auth')->group(function() {
 
     Route::resource('wallets', WalletController::class);
 
+    Route::get('/transactions/load', [TransactionController::class, 'loadData'])->name('transactions.load');
     Route::resource('transactions', TransactionController::class);
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');

@@ -16,6 +16,10 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
                     <h5 class="fw-bold fs-6 mb-0">{{ $wallet->name }}</h5>
+
+                    <a href="{{ route('wallets.edit', $wallet) }}" class="text-decoration-none">
+                        Cân đối Ví
+                    </a>
                 </div>
 
                 <hr class="my-2" />
@@ -80,7 +84,7 @@
             startDate.setDate(startDate.getDate() - 7);
         }
 
-        fetch('/transactions?' + new URLSearchParams({
+        fetch('/transactions/load?' + new URLSearchParams({
                 wallet_id: walletId,
                 start_date: startDate.getFullYear() + '-' + (startDate.getMonth() + 1) + '-' + startDate.getDate(),
                 end_date: endDate.getFullYear() + '-' + (endDate.getMonth() + 1) + '-' + endDate.getDate(),
@@ -99,10 +103,15 @@
                 loadingEl.classList.add('d-none');
                 loadingEl.classList.remove('d-block')
 
-                data.has_more ? document.getElementById('more-wrapper').classList.remove('d-none') : document.getElementById('more-wrapper').classList.add('d-none');
+                data.has_more ?
+                    document.getElementById('more-wrapper').classList.remove('d-none') :
+                    document.getElementById('more-wrapper').classList.add('d-none');
             })
             .catch((e) => {
                 console.log(e);
+                document.getElementById('more-wrapper').classList.add('d-none');
+                loadingEl.classList.add('d-none');
+                loadingEl.classList.remove('d-block')
             });
     }
 
