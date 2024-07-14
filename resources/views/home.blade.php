@@ -2,18 +2,28 @@
 
 @section('content')
 <div class="container py-4">
-    <div class="text-center mb-4">
-        <form action="{{ route('logout') }}" method="POST">
-            @csrf()
-            <button type="submit" class="btn btn-primary btn-sm">Logout</button>
-        </form>
+    <div class="text-center mb-5">
+        <a href="{{ route('transactions.create') }}" class="btn btn-success w-100 my-4">Tạo giao dịch</a>
+
+        <table class="table table-bordered table-striped">
+            @foreach($latestTransactions as $transaction)
+            <tr>
+                <td>
+                    <p class="fw-lighter mb-2">{{ $transaction->description }}</p>
+                    <p class="mb-0">{{ $transaction->walletAccount->wallet->name . ' - ' . $transaction->walletAccount->name }}</p>
+                </td>
+                <td class="text-{{ $transaction->is_income  ? 'success' : 'danger' }}">
+                    {{ ($transaction->is_income ? '' : '-') . $transaction->amount_currency }}
+                </td>
+                <td>
+                    <a href="{{ route('transactions.edit', $transaction->id) }}">Edit</a>
+                </td>
+            </tr>
+            @endforeach
+        </table>
     </div>
 
-    <div class="text-center">
-        <a href="{{ route('transactions.create') }}" class="btn btn-success w-100 my-5">Tạo giao dịch</a>
-    </div>
-
-    <div id="wallet-list">
+    <div id="wallet-list" class="mb-4">
         <h3 class="d-flex justify-content-between align-items-center">
             <span class="fw-bold fs-4">Danh sách ví</span>
             <a class="fs-5" href="{{ route('wallets.create') }}">Tạo mới</a>
@@ -46,6 +56,13 @@
             </div>
             @endforeach
         </div>
+    </div>
+
+    <div class="text-center">
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf()
+            <button type="submit" class="btn btn-danger btn-sm">Logout</button>
+        </form>
     </div>
 </div>
 @endsection

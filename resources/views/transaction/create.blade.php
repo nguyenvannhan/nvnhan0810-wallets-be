@@ -12,7 +12,7 @@
 @section('content')
 <main class="container d-flex">
     <div class="main-content">
-        <h1 class="text-center">Create Wallet</h1>
+        <h1 class="text-center">Create Transaction</h1>
 
         @if($errors->any())
         <div class="alert alert-danger mb-4 ps-0">
@@ -31,6 +31,7 @@
                 <label for="type" class="form-label">Amount</label>
                 <input type="number" name="amount" class="form-control" value="0" />
             </div>
+
             <div class="mb-4">
                 <label for="type" class="form-label">Type</label>
 
@@ -64,6 +65,11 @@
                 </select>
             </div>
 
+            <div class="mb-4">
+                <label for="description" class="form-label">Mô tả</label>
+                <input type="text" name="description" class="form-control" value="" />
+            </div>
+
             <button type="submit" class="btn btn-primary">Submit</button>
 
         </form>
@@ -75,7 +81,7 @@
 <script>
     const walletSelect = document.getElementById('wallet-select');
     const wallets = @json($wallets);
-    const waleltAccountNames = @json(\App\Types\WalletAccountTypes::getList());
+    const waleltAccountNames = @json($walletAccountTypes);
 
     walletSelect.addEventListener('change', (event) => {
         const walletId = event.target.value;

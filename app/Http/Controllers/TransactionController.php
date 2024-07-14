@@ -8,6 +8,7 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\TransactionService;
 use App\Types\TransactionTypes;
+use App\Types\WalletAccountTypes;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
@@ -37,10 +38,12 @@ class TransactionController extends Controller
     public function create() {
         $types = TransactionTypes::getTypeList();
         $wallets = Wallet::with('walletAccounts')->get();
+        $walletAccountTypes = WalletAccountTypes::getList();
 
         return view('transaction.create', [
             'types' => $types,
             'wallets' => $wallets,
+            'walletAccountTypes' => $walletAccountTypes,
         ]);
     }
 

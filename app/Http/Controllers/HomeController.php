@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
 
@@ -11,8 +12,11 @@ class HomeController extends Controller
     {
         $wallets = Wallet::with('walletAccounts')->get();
 
+        $latestTransactions = Transaction::latest()->take(5)->get();
+
         return view('home', [
             'wallets' => $wallets,
+            'latestTransactions' => $latestTransactions,
         ]);
     }
 }
