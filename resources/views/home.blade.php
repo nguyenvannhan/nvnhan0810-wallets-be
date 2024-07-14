@@ -9,6 +9,10 @@
         </form>
     </div>
 
+    <div class="text-center">
+        <a href="{{ route('transactions.create') }}" class="btn btn-success w-100 my-5">Tạo giao dịch</a>
+    </div>
+
     <div id="wallet-list">
         <h3 class="d-flex justify-content-between align-items-center">
             <span class="fw-bold fs-4">Danh sách ví</span>

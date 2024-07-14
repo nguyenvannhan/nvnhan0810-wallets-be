@@ -22,42 +22,42 @@
                 @endforeach
             </ul>
         </div>
-            @endif
+        @endif
 
-            <form id="wallet-form" class="w-100" action="{{ route('wallets.store') }}" method="POST">
-                @csrf()
+        <form id="wallet-form" class="w-100" action="{{ route('wallets.store') }}" method="POST">
+            @csrf()
 
-                <div class="mb-4">
-                    <label for="name" class="form-label">Name</label>
-                    <input id="name" name="name" type="text" class="form-control" />
-                </div>
+            <div class="mb-4">
+                <label for="name" class="form-label">Name</label>
+                <input id="name" name="name" type="text" class="form-control" />
+            </div>
 
-                <div id="type-groups" class="mb-4">
-                    <label class="form-label">Accounts</label>
+            <div id="type-groups" class="mb-4">
+                <label class="form-label">Accounts</label>
 
-                    <div id="type-group-list">
-                        <div id="type-group-0" class="type-group border rounded px-2 mb-2">
-                            <div class="mb-4">
-                                <label for="type" class="form-label">Types</label>
-                                <select id="type" name="accounts[0][type]" class="form-select account-type-select">
-                                    @foreach($accounts as $key => $type)
-                                    <option value="{{ $key }}">{{ $type['name'] }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="flex mb-4">
-                                <label for="type" class="form-label">Balance</label>
-                                <input type="number" class="form-control" name="accounts[0][balance]" value="0" />
-                            </div>
+                <div id="type-group-list">
+                    <div id="type-group-0" class="type-group border rounded px-2 mb-2">
+                        <div class="mb-4">
+                            <label for="type" class="form-label">Types</label>
+                            <select id="type" name="accounts[0][type]" class="form-select account-type-select">
+                                @foreach($accounts as $key => $type)
+                                <option value="{{ $key }}">{{ $type['name'] }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="flex mb-4">
+                            <label for="type" class="form-label">Balance</label>
+                            <input type="number" class="form-control" name="accounts[0][balance]" value="0" />
                         </div>
                     </div>
-
-                    <button type="button" id="add-account" class="btn btn-link" count="1">Add Account</button>
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100">Create</button>
-            </form>
-        </div>
+                <button type="button" id="add-account" class="btn btn-link" count="1">Add Account</button>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Create</button>
+        </form>
+    </div>
 </main>
 @endsection
 

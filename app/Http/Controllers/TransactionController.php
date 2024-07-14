@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Transaction\CreateTransactionRequest;
 use App\Http\Requests\Transaction\UpdateTransactionRequest;
 use App\Models\Transaction;
+use App\Models\Wallet;
 use App\Services\TransactionService;
+use App\Types\TransactionTypes;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
@@ -33,7 +35,13 @@ class TransactionController extends Controller
     }
 
     public function create() {
-        return view('transaction.create');
+        $types = TransactionTypes::getTypeList();
+        $wallets = Wallet::with('walletAccounts')->get();
+
+        return view('transaction.create', [
+            'types' => $types,
+            'wallets' => $wallets,
+        ]);
     }
 
     public function store(CreateTransactionRequest $request)
