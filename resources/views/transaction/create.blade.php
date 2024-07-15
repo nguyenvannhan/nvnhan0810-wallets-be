@@ -10,7 +10,7 @@
 @endsection
 
 @section('content')
-<main class="container d-flex">
+<main class="container d-flex bg-white m-4 rounded-4 p-4 m-md-auto">
     <div class="main-content">
         <h1 class="text-center">Create Transaction</h1>
 
@@ -70,7 +70,7 @@
                 <input type="text" name="description" class="form-control" value="" />
             </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary w-100">Submit</button>
 
         </form>
     </div>

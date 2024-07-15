@@ -73,14 +73,16 @@ class WalletService {
 
             $transactions = [];
             foreach($accounts as $account) {
-                $transactions[] = [
-                    'wallet_account_id' => $account->id,
-                    'amount' => abs($account->balance),
-                    'type' => $account->balance > 0 ? TransactionTypes::TYPE_INCOME : TransactionTypes::TYPE_EXPENSE,
-                    'description' => 'Tạo mới Ví',
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ];
+                if ($account->balance > 0) {
+                    $transactions[] = [
+                        'wallet_account_id' => $account->id,
+                        'amount' => abs($account->balance),
+                        'type' => $account->balance > 0 ? TransactionTypes::TYPE_INCOME : TransactionTypes::TYPE_EXPENSE,
+                        'description' => 'Tạo mới Ví',
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
             }
 
             if (count($transactions)) {

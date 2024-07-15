@@ -88,7 +88,16 @@ class TransactionController extends Controller
 
     public function edit(Transaction $transaction)
     {
+        $types = TransactionTypes::getTypeList();
+        $wallets = Wallet::with('walletAccounts')->get();
+        $walletAccountTypes = WalletAccountTypes::getList();
+
+        $transaction->load(['walletAccount']);
+
         return view('transaction.edit', [
+            'types' => $types,
+            'wallets' => $wallets,
+            'walletAccountTypes' => $walletAccountTypes,
             'transaction' => $transaction,
         ]);
     }

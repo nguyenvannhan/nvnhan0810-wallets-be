@@ -10,7 +10,9 @@ $currentDate = $transactions->first()?->created_at;
         </div>
         <div class="d-flex justify-content-between align-items-center">
             <span title="{{ $transaction->description }}" class="text-truncate">{{ $transaction->description }}</span>
-            <span class="fw-bold text-nowrap ps-2 {{ $transaction->is_income ? 'text-success' : 'text-danger' }}">{{ $transaction->is_income ? '' : '-' }} {{ $transaction->amount_currency }}</span>
+            <a href="{{ route('transactions.edit', $transaction) }}" class="text-decoration-none">
+                <span class="fw-bold text-nowrap ps-2 {{ $transaction->is_income ? 'text-success' : 'text-danger' }}">{{ $transaction->is_income ? '' : '-' }} {{ $transaction->amount_currency }}</span>
+            </a>
         </div>
     </div>
 

@@ -14,14 +14,13 @@
         </div>
         <div>
             <a href="{{ route('transactions.create') }}" class="footer-item">
-                <i class="fa-solid fa-circle-plus"></i>
-                <span>Transaction</span>
+                <i class="fa-solid fa-circle-plus fa-2x"></i>
             </a>
         </div>
         <div>
-            <a href="{{ route('home') }}" class="footer-item">
+            <a href="{{ route('transactions.index') }}" class="footer-item">
                 <i class="fa-solid fa-chart-simple"></i>
-                <span>Analitycs</span>
+                <span>Transaction</span>
             </a>
         </div>
         <div>

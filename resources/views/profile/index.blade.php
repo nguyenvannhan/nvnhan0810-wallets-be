@@ -11,7 +11,7 @@
 @endsection
 
 @section('content')
-<div class="container m-4 bg-white rounded-3 p-4 d-flex flex-column gap-4 justify-content-center align-items-center">
+<div class="container mx-4 my-auto bg-white rounded-3 p-4 d-flex flex-column gap-4 justify-content-center align-items-center m-md-auto">
     <img src="{{ $user->avatar }}" alt="avatar" class="avatar" />
 
     <div class="d-flex flex-column gap-2">
