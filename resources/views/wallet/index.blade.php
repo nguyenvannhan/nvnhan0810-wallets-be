@@ -10,13 +10,13 @@
 
         <div class="row">
             @foreach($wallets as $wallet)
-            <div class="col-12 col-md-6 col-lg-4 mb-2">
+            <div class="col-12 mb-2">
                 <div class="card p-0">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="fw-bold fs-6">{{ $wallet->name }}</h5>
-                            <a href="{{ route('wallets.edit', $wallet->id) }}">
-                                <i class="fa-solid fa-pen fs-6"></i>
+                            <a href="{{ route('wallets.show', $wallet->id) }}">
+                                Chi tiết
                             </a>
                         </div>
 

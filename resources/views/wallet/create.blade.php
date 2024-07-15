@@ -10,7 +10,7 @@
 @endsection
 
 @section('content')
-<main class="container d-flex m-4 bg-white rounded-4 py-4">
+<main class="container d-flex m-4 bg-white rounded-4 py-4 mx-md-auto">
     <div class="main-content">
         <h1 class="text-center">Create Wallet</h1>
 

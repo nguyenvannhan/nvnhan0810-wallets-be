@@ -6,6 +6,12 @@
         max-width: calc(100vw - 24px);
         width: 100%;
     }
+
+    @media screen and (min-width: 500px) {
+        #wallet-detail {
+            max-width: 476px;
+        }
+    }
 </style>
 @endsection
 
