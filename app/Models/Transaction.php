@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\AmountTrait;
 use App\Types\TransactionTypes;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model
 {
-    use HasFactory;
+    use HasFactory, AmountTrait;
 
     protected $fillable = [
         'wallet_account_id',
@@ -24,14 +25,12 @@ class Transaction extends Model
         return $this->belongsTo(WalletAccount::class);
     }
 
-    /***** Mutator and Accessor ******/
-    public function amountCurrency(): Attribute
+    public function transactionAttributes()
     {
-        return Attribute::make(
-            get: fn () => number_format($this->amount) . ' VND',
-        );
+        return $this->hasMany(TransactionAttribute::class);
     }
 
+    /***** Mutator and Accessor ******/
     public function isIncome(): Attribute
     {
         return Attribute::make(

@@ -8,4 +8,7 @@ import '@popperjs/core';
 // Added: Actual Bootstrap JavaScript dependency
 import 'bootstrap';
 
+import jQuery from 'jquery';
+window.$ = jQuery;
+
 

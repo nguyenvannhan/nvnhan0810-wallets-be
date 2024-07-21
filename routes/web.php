@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BorrowTransactionController;
+use App\Http\Controllers\DebtController;
+use App\Http\Controllers\FriendController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransactionController;
@@ -24,4 +27,8 @@ Route::middleware('auth')->group(function() {
     Route::resource('transactions', TransactionController::class);
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+
+    Route::resource('/borrows', BorrowTransactionController::class);
+
+    Route::resource('/friends', FriendController::class);
 });

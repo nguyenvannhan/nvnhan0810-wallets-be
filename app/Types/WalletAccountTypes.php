@@ -22,4 +22,11 @@ class WalletAccountTypes {
             ]
         ];
     }
+
+    public static function getNotIncomeTypeList()
+    {
+        return [
+            self::TYPE_CREDIT, self::TYPE_DEBIT
+        ];
+    }
 }

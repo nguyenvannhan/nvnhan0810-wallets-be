@@ -46,7 +46,7 @@
                             </select>
                         </div>
                         <div class="flex">
-                            <label for="type" class="form-label">Balance</label>
+                            <label for="account-balance" class="form-label">Balance</label>
                             <input type="number" class="form-control" name="accounts[0][balance]" value="0" />
                         </div>
                     </div>

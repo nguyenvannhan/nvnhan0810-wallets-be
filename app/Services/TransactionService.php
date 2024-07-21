@@ -21,6 +21,8 @@ class TransactionService {
             $transaction->walletAccount->update([
                 'balance' => DB::raw('balance ' . $balanceQuery . ' ' . $transaction->amount),
             ]);
+
+            return $transaction;
         });
     }
 

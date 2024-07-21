@@ -10,9 +10,9 @@
 @endsection
 
 @section('content')
-<main class="container d-flex bg-white m-4 rounded-4 p-4 m-md-auto">
+<main class="container d-flex m-4 bg-white rounded-4 py-4 mx-md-auto">
     <div class="main-content">
-        <h1 class="text-center">Create Transaction</h1>
+        <h1 class="text-center">Mượn - Cho mượn</h1>
 
         @if($errors->any())
         <div class="alert alert-danger mb-4 ps-0">
@@ -24,39 +24,35 @@
         </div>
         @endif
 
-        <form id="transaction-form" action="{{ route('transactions.store') }}" method="POST">
-            @csrf
+        <form id="debt-form" class="w-100" action="{{ route('borrows.store') }}" method="POST">
+            @csrf()
 
             <div class="mb-4">
-                <label for="type" class="form-label">Amount</label>
-                <input type="number" name="amount" class="form-control" value="0" />
+                <label for="amount" class="form-label">Amount</label>
+                <input id="amount" name="amount" type="number" class="form-control" />
             </div>
 
             <div class="mb-4">
                 <label for="type" class="form-label">Type</label>
 
                 <div>
-                    @foreach($types as $type)
+                    @foreach($typeList as $key => $type)
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" name="type" type="radio" id="{{ $type }}-radio" value="{{ $type }}">
-                        <label class="form-check-label" for="{{ $type }}-radio">{{ ucwords($type) }}</label>
+                        <input class="form-check-input" name="type" type="radio" id="{{ $key }}-radio" value="{{ $key }}">
+                        <label class="form-check-label" for="{{ $key }}-radio">{{ ucwords($type) }}</label>
                     </div>
                     @endforeach
                 </div>
             </div>
 
             <div class="mb-4">
-                <label for="type" class="form-label">Wallet</label>
+                <label for="wallet-select" class="form-label">Ví</label>
 
-                <select id="wallet-select" class="form-select" name="wallet_id">
+                <select id="wallet-select" class="form-select mb-4" name="wallet_id">
                     @foreach($wallets as $wallet)
-                    <option value="{{ $wallet->id }}">{{ $wallet->name }}</option>
+                        <option value="{{ $wallet->id }}">{{ $wallet->name }}</option>
                     @endforeach
                 </select>
-            </div>
-
-            <div class="mb-4">
-                <label for="type" class="form-label">Wallet Account</label>
 
                 <select id="wallet-account-select" class="form-select mb-4" name="wallet_account_id">
                     @foreach($wallets->first()->walletAccounts as $account)
@@ -66,12 +62,11 @@
             </div>
 
             <div class="mb-4">
-                <label for="description" class="form-label">Mô tả</label>
-                <input type="text" name="description" class="form-control" value="" />
+                <label for="installment-monthly-date" class="form-label">Ngày trả góp</label>
+                <input class="form-control" id="installment-monthly-date" name="installement_date" />
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">Submit</button>
-
+            <button type="submit" class="btn btn-primary w-100">Create</button>
         </form>
     </div>
 </main>
