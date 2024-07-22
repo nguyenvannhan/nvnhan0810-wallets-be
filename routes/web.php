@@ -5,12 +5,14 @@ use App\Http\Controllers\BorrowTransactionController;
 use App\Http\Controllers\DebtController;
 use App\Http\Controllers\FriendController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\IndexController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\WalletController;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'index')->name('index');
+Route::get('/', [IndexController::class, 'index'])->name('index');
+
 Route::prefix('auth')->group(function() {
     Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::get('/callback', [AuthController::class, 'callback'])->name('callback');

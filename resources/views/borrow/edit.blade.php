@@ -12,7 +12,7 @@
 @section('content')
 <main class="container d-flex m-4 bg-white rounded-4 py-4 mx-md-auto">
     <div class="main-content">
-        <h1 class="text-center">Mượn - Cho mượn</h1>
+        <h1 class="text-center">Trả nợ</h1>
 
         @if($errors->any())
         <div class="alert alert-danger mb-4 ps-0">
@@ -24,25 +24,13 @@
         </div>
         @endif
 
-        <form id="debt-form" class="w-100" action="{{ route('borrows.store') }}" method="POST">
+        <form id="debt-form" class="w-100" action="{{ route('borrows.update', $borrow) }}" method="POST">
             @csrf()
+            @method('PATCH')
 
             <div class="mb-4">
                 <label for="amount" class="form-label">Amount</label>
                 <input id="amount" name="amount" type="number" class="form-control" />
-            </div>
-
-            <div class="mb-4">
-                <label for="type" class="form-label">Type</label>
-
-                <div>
-                    @foreach($typeList as $key => $type)
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" name="type" type="radio" id="{{ $key }}-radio" value="{{ $key }}">
-                        <label class="form-check-label" for="{{ $key }}-radio">{{ ucwords($type) }}</label>
-                    </div>
-                    @endforeach
-                </div>
             </div>
 
             <div class="mb-4">
@@ -64,15 +52,6 @@
             <div class="mb-4">
                 <label for="transaction-date" class="form-label">Ngày</label>
                 <input class="form-control" id="transaction-date" name="transaction_date" />
-            </div>
-
-            <div class="mb-4">
-                <label for="friend-select" class="form-label">Bạn bè</label>
-                <select id="friend-select" class="form-select mb-4" name="friend_id">
-                    @foreach($friends as $friend)
-                    <option value="{{ $friend->id }}">{{ $friend->name }}</option>
-                    @endforeach
-                </select>
             </div>
 
             <button type="submit" class="btn btn-primary w-100">Create</button>

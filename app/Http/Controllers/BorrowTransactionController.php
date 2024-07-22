@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BorrowTransaction\StoreBorrowTransactionRequest;
+use App\Http\Requests\BorrowTransaction\UpdateBorrowTransactionRequest;
+use App\Models\BorrowTransaction;
+use App\Models\Friend;
+use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BorrowTransactionService;
 use App\Types\BorrowTransactionTypes;
@@ -20,7 +24,11 @@ class BorrowTransactionController extends Controller
 
     public function index()
     {
-        return view('borrow.index');
+        $transactions = BorrowTransaction::orderBy('transaction_date', 'desc')->get();
+
+        return view('borrow.index', [
+            'transactions' => $transactions,
+        ]);
     }
 
     public function create()
@@ -31,16 +39,39 @@ class BorrowTransactionController extends Controller
 
         $walletAccountTypes = WalletAccountTypes::getList();
 
+        $friends = Friend::all();
+
         return view('borrow.create', [
             'typeList' => $typeList,
             'wallets' => $wallets,
-            'walletAccountTypes' => $walletAccountTypes
+            'walletAccountTypes' => $walletAccountTypes,
+            'friends' => $friends,
         ]);
     }
 
     public function store(StoreBorrowTransactionRequest $request)
     {
         $this->borrowTransactionService->createTransaction($request->validated());
+
+        return redirect()->route('borrows.index');
+    }
+
+    public function edit(BorrowTransaction $borrow)
+    {
+        $wallets = Wallet::with(['walletAccounts'])->get();
+
+        $walletAccountTypes = WalletAccountTypes::getList();
+
+        return view('borrow.edit', [
+            'wallets' => $wallets,
+            'walletAccountTypes' => $walletAccountTypes,
+            'borrow' => $borrow,
+        ]);
+    }
+
+    public function update(BorrowTransaction $borrow, UpdateBorrowTransactionRequest $request)
+    {
+        $this->borrowTransactionService->updateTransaction($borrow, $request->validated());
 
         return redirect()->route('borrows.index');
     }
