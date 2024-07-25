@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
+use App\Helpers\AmountHelpers;
+use App\Models\Traits\AmountTrait;
 use App\Types\WalletAccountTypes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use NumberFormatter;
 
 class WalletAccount extends Model
 {
-    use HasFactory;
+    use HasFactory, AmountTrait;
 
     protected $fillable = [
         'type', 'wallet_id', 'balance',
@@ -36,7 +37,7 @@ class WalletAccount extends Model
     public function balanceCurrency(): Attribute
     {
         return Attribute::make(
-            get: fn () => number_format($this->balance) . ' VND',
+            get: fn () => AmountHelpers::formatWithCurrency($this->balance),
         );
     }
 }

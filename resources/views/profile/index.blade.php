@@ -28,6 +28,7 @@
     <div class="d-flex flex-column gap-2">
         <a href="{{ route('friends.index') }}" class="btn btn-link">Bạn bè</a>
         <a href="{{ route('borrows.index') }}" class="btn btn-link">Mượn - Cho mượn</a>
+        <a href="{{ route('installments.index') }}" class="btn btn-link">Trả góp - Khoản vay</a>
     </div>
 
     <div>

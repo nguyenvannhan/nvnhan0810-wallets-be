@@ -4,6 +4,12 @@
 <div class="container py-4">
     @include('home.components.wallet-list')
 
+    @if($totalInstallment > 0)
+        <div class="mb-4">
+            <h2 class="text-danger text-center fw-bold">-{{ number_format($totalInstallment) }} VND</h2>
+        </div>
+    @endif
+
     @include('home.components.latest-transactions')
 </div>
 @endsection

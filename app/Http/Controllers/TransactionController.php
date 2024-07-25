@@ -4,13 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Transaction\CreateTransactionRequest;
 use App\Http\Requests\Transaction\UpdateTransactionRequest;
+use App\Models\InstallmentTransaction;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Models\WalletAccount;
 use App\Services\TransactionService;
+use App\Types\TransactionAttributeTypes;
 use App\Types\TransactionTypes;
 use App\Types\WalletAccountTypes;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Psy\Readline\Transient;
 
 class TransactionController extends Controller
@@ -49,8 +54,15 @@ class TransactionController extends Controller
         } while ($hasMore && $transactions->isEmpty());
 
         if ($transactions->isNotEmpty()) {
-            $transactions->load(['walletAccount.wallet']);
+            $transactions->load(['walletAccount.wallet', 'transactionAttributes']);
         }
+
+        $transactions = $transactions->map(function ($transaction) {
+            $paidAttribute = $transaction->transactionAttributes->where('key', TransactionAttributeTypes::INSTALLMENT_PAID_STATUS)->first();
+
+            $transaction->paid_status = $paidAttribute ? $paidAttribute->value : true;
+            return $transaction;
+        });
 
         return response()->json([
             'transaction' => view('transaction.components.item-on-wallet-detail', [
@@ -112,6 +124,78 @@ class TransactionController extends Controller
     public function destroy(Transaction $transaction)
     {
         $this->transactionService->deleteTransaction($transaction);
+
+        return redirect()->route('transactions.index');
+    }
+
+    public function showPayInstallment(Transaction $transaction)
+    {
+        $wallets = Wallet::with(['walletAccounts' => function($eager) {
+            $eager->where('type', '<>', WalletAccountTypes::TYPE_CREDIT);
+        }])->get();
+        $walletAccountTypes = WalletAccountTypes::getList();
+
+        return view('transaction.pay-installment', [
+            'transaction' => $transaction,
+            'wallets' => $wallets,
+            'walletAccountTypes' => $walletAccountTypes,
+        ]);
+    }
+
+    public function payInstallment(Request $request)
+    {
+        DB::transaction(function() use ($request) {
+            $request->validate([
+                'transaction_id' => 'required|exists:transactions,id',
+                'wallet_account_id' => 'required|exists:wallet_accounts,id',
+            ]);
+
+            $transaction = Transaction::with(['transactionAttributes'])->findOrFail($request->transaction_id);
+
+            $attribute = $transaction->transactionAttributes->where('key', TransactionAttributeTypes::INSTALLMENT_PAID_STATUS)->first();
+            $installAttribute = $transaction->transactionAttributes->where('key', TransactionAttributeTypes::INSTALLMENT_ID)->first();
+
+            if (!$attribute || $attribute->value || !$installAttribute) {
+                throw ValidationException::withMessages([
+                    'Atribute not found',
+                ]);
+            }
+
+            $attribute->value = true;
+            $attribute->save();
+
+            $installment = InstallmentTransaction::findOrFail($installAttribute->value);
+
+            $nextDate = Carbon::parse($installment->next_paid_date);
+            $nextDate->addMonthNoOverflow();
+            $startDate = Carbon::parse($installment->start_paid_date);
+
+            $nextDay = (int) $nextDate->format('d');
+            $lastDay = (int) $nextDate->clone()->endOfMonth()->format('d');
+            $startDay = (int) $startDate->format('d');
+
+            if ($nextDay < $startDay && $lastDay > $startDay) {
+                $nextDate->day($startDay);
+            }
+
+            $installment->next_paid_date = $nextDate;
+            $installment->remain_months = $installment->remain_months - 1;
+            $installment->save();
+
+            $walletAccount = WalletAccount::findOrFail($request->wallet_account_id);
+
+            if ($walletAccount->type === WalletAccountTypes::TYPE_CREDIT || $walletAccount->balance < $transaction->amount) {
+                throw ValidationException::withMessages([
+                    'Wallet not have enough blance or is credit',
+                ]);
+            }
+
+            $transaction->wallet_account_id = $request->wallet_account_id;
+            $transaction->save();
+
+            $walletAccount->balance = $walletAccount->balance - $transaction->amount;
+            $walletAccount->save();
+        });
 
         return redirect()->route('transactions.index');
     }
