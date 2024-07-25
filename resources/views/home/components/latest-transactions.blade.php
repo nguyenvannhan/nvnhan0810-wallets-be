@@ -4,7 +4,7 @@
         <tr>
             <td>
                 <p class="fw-lighter mb-2">{{ $transaction->description }}</p>
-                <p class="mb-0">{{ $transaction->walletAccount->wallet->name . ' - ' . $transaction->walletAccount->name }}</p>
+                <p class="mb-0">{{ $transaction->walletAccount->wallet->name . ' - ' . ($transaction->walletAccount->name ?? $transaction->walletAccount->type_name) }}</p>
             </td>
             <td class="text-{{ $transaction->is_income  ? 'success' : 'danger' }}">
                 {{ ($transaction->is_income ? '' : '-') . $transaction->amount_currency }}

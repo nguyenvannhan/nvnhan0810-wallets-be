@@ -14,7 +14,7 @@ class WalletAccount extends Model
     use HasFactory, AmountTrait;
 
     protected $fillable = [
-        'type', 'wallet_id', 'balance',
+        'type', 'wallet_id', 'balance', 'name',
     ];
 
     /***** RELATIONSHIPS *****/
@@ -28,7 +28,7 @@ class WalletAccount extends Model
     }
 
     /***** Mutator and Accessor ******/
-    public function name(): Attribute {
+    public function typeName(): Attribute {
         return Attribute::make(
             get: fn () => WalletAccountTypes::getList()[$this->type]['name'] ?? '',
         );

@@ -45,7 +45,7 @@
 
                 <select id="wallet-account-select" class="form-select mb-4" name="wallet_account_id">
                     @foreach($wallets->first()->walletAccounts as $account)
-                    <option value="{{ $account->id }}">{{ $account->name }}</option>
+                    <option value="{{ $account->id }}">{{ $account->name ?? $account->type_name }}</option>
                     @endforeach
                 </select>
             </div>

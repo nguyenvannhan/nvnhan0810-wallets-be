@@ -6,7 +6,7 @@ $currentDate = $transactions->first()?->created_at;
 
     <div class="d-flex flex-column gap-2">
         <div class="d-flex justify-content-between align-items-center">
-            <span class="text-truncate fw-light">{{ $transaction->walletAccount->wallet->name }} - {{ $transaction->walletAccount->name }}</span>
+            <span class="text-truncate fw-light">{{ $transaction->walletAccount->wallet->name }} - {{ $transaction->walletAccount->name ?? $transaction->walletAccount->type_name }}</span>
             <span class="text-nowrap ps-2">{{ $transaction->created_at->format("d/m/Y") }}</span>
         </div>
         <div class="d-flex justify-content-between align-items-center">

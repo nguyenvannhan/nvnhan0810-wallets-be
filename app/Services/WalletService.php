@@ -24,6 +24,7 @@ class WalletService {
                     'wallet_id' => $wallet->id,
                     'type' => $account['type'],
                     'balance' => $account['balance'],
+                    'name' => $account['name'],
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
@@ -54,6 +55,7 @@ class WalletService {
                         'wallet_id' => $wallet->id,
                         'type' => $account['type'],
                         'balance' => $account['balance'],
+                        'name' => $account['name'],
                     ]);
                 } else {
                     if ($dbAccount->balance != $account['balance']) {
@@ -67,6 +69,7 @@ class WalletService {
 
                     $dbAccount->balance = $account['balance'];
                     $dbAccount->type = $account['type'];
+                    $dbAccount->name = $account['name'];
                     $dbAccount->save();
                 }
             }

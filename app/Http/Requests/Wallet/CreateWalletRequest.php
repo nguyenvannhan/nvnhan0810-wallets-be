@@ -26,6 +26,7 @@ class CreateWalletRequest extends FormRequest
             'name' => 'required|string',
             'accounts' => 'required|array|min:1',
             'accounts.*.type' => 'in:' . implode(',', array_keys(WalletAccountTypes::getList())),
+            'accounts.*.name' => 'required|string|max:255',
             'accounts.*.balance' => 'nullable',
         ];
     }

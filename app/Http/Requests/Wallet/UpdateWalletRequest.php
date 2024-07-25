@@ -27,6 +27,7 @@ class UpdateWalletRequest extends FormRequest
             'accounts' => 'required|array|min:1',
             'accounts.*.id' => 'nullable|exists:wallet_accounts,id',
             'accounts.*.type' => 'in:' . implode(',', array_keys(WalletAccountTypes::getList())),
+            'accounts.*.name' => 'required|string|max:255',
             'accounts.*.balance' => 'nullable',
         ];
     }

@@ -45,6 +45,12 @@
                                 @endforeach
                             </select>
                         </div>
+
+                        <div class="mb-4">
+                            <label for="account-name" class="form-label">Name</label>
+                            <input type="text" class="form-control" name="accounts[0][name]" value="" />
+                        </div>
+
                         <div class="flex">
                             <label for="account-balance" class="form-label">Balance</label>
                             <input type="number" class="form-control" name="accounts[0][balance]" value="0" />
@@ -81,6 +87,10 @@
                     <select id="type" name="accounts[${count}][type]" class="form-select">
                         ${optionHtml}
                     </select>
+                </div>
+                <div class="mb-4">
+                    <label for="account-name" class="form-label">Name</label>
+                    <input type="text" class="form-control" name="accounts[${count}][name]" value="" />
                 </div>
                 <div class="flex">
                     <label for="type" class="form-label">Balance</label>

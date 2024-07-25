@@ -48,6 +48,11 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="mb-4">
+                            <label for="account-name" class="form-label">Name</label>
+                            <input type="text" class="form-control" name="accounts[{{ $keyAccount}}][name]" value="{{ $account->name }}" />
+                        </div>
+
                         <div class="flex">
                             <label for="type" class="form-label">Balance</label>
                             <input type="number" class="form-control" name="accounts[{{ $keyAccount }}][balance]" value="{{ $account->balance }}" />
@@ -85,6 +90,10 @@
                     <select id="type" name="accounts[${count}][type]" class="form-select">
                         ${optionHtml}
                     </select>
+                </div>
+                <div class="mb-4">
+                    <label for="account-name" class="form-label">Name</label>
+                    <input type="text" class="form-control" name="accounts[${count}][name]" value="" />
                 </div>
                 <div class="flex">
                     <label for="type" class="form-label">Balance</label>

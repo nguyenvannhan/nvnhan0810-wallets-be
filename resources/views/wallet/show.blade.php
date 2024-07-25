@@ -32,7 +32,7 @@
 
                 @foreach($wallet->walletAccounts as $account)
                 <div class="d-flex justify-content-between align-items-center">
-                    <span class="fs-6 fw-light">{{ $account->name }}</span>
+                    <span class="fs-6 fw-light">{{ $account->name ?? $account->type_name }}</span>
                     <span class="fs-6 fw-bold {{ $account->balance > 0 ? 'text-success' : ($account->balance === 0 ? '' : 'text-danger') }}">
                         {{ $account->balance_currency }}
                     </span>
