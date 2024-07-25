@@ -74,6 +74,7 @@ class InstallmentController extends Controller
 
                 $transaction->transactionAttributes()->create([
                     'key' => TransactionAttributeTypes::INSTALLMENT_ID,
+                    'value' => $installment->id,
                 ]);
 
                 $transaction->walletAccount->update([
