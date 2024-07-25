@@ -5,7 +5,9 @@ namespace App\Services;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Models\WalletAccount;
+use App\Models\WalletAccountAttribute;
 use App\Types\TransactionTypes;
+use App\Types\WalletAccountAttributeTypes;
 use App\Types\WalletAccountTypes;
 use Illuminate\Support\Facades\DB;
 
@@ -65,6 +67,28 @@ class WalletService {
                             'type' => $account['balance'] > $dbAccount->balance ? TransactionTypes::TYPE_INCOME : TransactionTypes::TYPE_EXPENSE,
                             'description' => 'Cân đối Ví',
                         ]);
+
+                        $walletStatement = WalletAccountAttribute::where('wallet_account_id', $dbAccount->id)
+                            ->where('key', WalletAccountAttributeTypes::CREDIT_STATEMENT_AMOUNT)
+                            ->first();
+
+                        if ($account['balance'] > $dbAccount->balance) {
+                            if ($walletStatement) {
+                                $walletStatement->value -= abs($account['balance'] - $dbAccount->balance);
+                                $walletStatement->save();
+                            }
+                        } else {
+                            if ($walletStatement) {
+                                $walletStatement->value += abs($account['balance'] - $dbAccount->balance);
+                                $walletStatement->save();
+                            } else {
+                                WalletAccountAttribute::create([
+                                    'wallet_account_id' => $dbAccount->id,
+                                    'key' => WalletAccountAttributeTypes::CREDIT_STATEMENT_AMOUNT,
+                                    'value' => abs($account['balance'] - $dbAccount->balance),
+                                ]);
+                            }
+                        }
                     }
 
                     $dbAccount->balance = $account['balance'];
