@@ -72,21 +72,23 @@ class WalletService {
                             ->where('key', WalletAccountAttributeTypes::CREDIT_STATEMENT_AMOUNT)
                             ->first();
 
-                        if ($account['balance'] > $dbAccount->balance) {
-                            if ($walletStatement) {
-                                $walletStatement->value -= abs($account['balance'] - $dbAccount->balance);
-                                $walletStatement->save();
-                            }
-                        } else {
-                            if ($walletStatement) {
-                                $walletStatement->value += abs($account['balance'] - $dbAccount->balance);
-                                $walletStatement->save();
+                        if ($dbAccount->type === WalletAccountTypes::TYPE_CREDIT) {
+                            if ($account['balance'] > $dbAccount->balance) {
+                                if ($walletStatement) {
+                                    $walletStatement->value -= abs($account['balance'] - $dbAccount->balance);
+                                    $walletStatement->save();
+                                }
                             } else {
-                                WalletAccountAttribute::create([
-                                    'wallet_account_id' => $dbAccount->id,
-                                    'key' => WalletAccountAttributeTypes::CREDIT_STATEMENT_AMOUNT,
-                                    'value' => abs($account['balance'] - $dbAccount->balance),
-                                ]);
+                                if ($walletStatement) {
+                                    $walletStatement->value += abs($account['balance'] - $dbAccount->balance);
+                                    $walletStatement->save();
+                                } else {
+                                    WalletAccountAttribute::create([
+                                        'wallet_account_id' => $dbAccount->id,
+                                        'key' => WalletAccountAttributeTypes::CREDIT_STATEMENT_AMOUNT,
+                                        'value' => abs($account['balance'] - $dbAccount->balance),
+                                    ]);
+                                }
                             }
                         }
                     }
