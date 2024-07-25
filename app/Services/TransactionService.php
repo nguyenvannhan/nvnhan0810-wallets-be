@@ -2,7 +2,10 @@
 namespace App\Services;
 
 use App\Models\Transaction;
+use App\Models\WalletAccountAttribute;
 use App\Types\TransactionTypes;
+use App\Types\WalletAccountAttributeTypes;
+use App\Types\WalletAccountTypes;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
@@ -22,6 +25,23 @@ class TransactionService {
                 'balance' => DB::raw('balance ' . $balanceQuery . ' ' . $transaction->amount),
             ]);
 
+            if ($transaction->walletAccount->type === WalletAccountTypes::TYPE_CREDIT) {
+                $attribute = WalletAccountAttribute::where('wallet_account_id', $transaction->walletAccount->id)
+                    ->where('key', WalletAccountAttributeTypes::CREDIT_STATEMENT_AMOUNT)
+                    ->first();
+
+                if (!$attribute) {
+                    WalletAccountAttribute::create([
+                        'wallet_account_id' => $transaction->walletAccount->id,
+                        'key' => WalletAccountAttributeTypes::CREDIT_STATEMENT_AMOUNT,
+                        'value' => $transaction->amount,
+                    ]);
+                } else {
+                    $attribute->value += $transaction->amount;
+                    $attribute->save();
+                }
+            }
+
             return $transaction;
         });
     }
@@ -40,6 +60,19 @@ class TransactionService {
                     'balance' => DB::raw('balance ' . $oldOperator . ' ' . $transaction->amount),
                 ]);
 
+                if ($transaction->type === TransactionTypes::TYPE_EXPENSE && $transaction->walletAccount->type === WalletAccountTypes::TYPE_CREDIT) {
+                    $attribute = WalletAccountAttribute::where('wallet_account_id', $transaction->wallet_account_id)
+                        ->where('key', WalletAccountAttributeTypes::CREDIT_STATEMENT_AMOUNT)
+                        ->first();
+
+                    if (!$attribute) {
+                        throw new Exception('Credit statement not found');
+                    }
+
+                    $attribute->value -= $transaction->amount;
+                    $attribute->save();
+                }
+
                 Transaction::where('id', $transaction->id)->update($data);
 
                 $transaction->refresh();
@@ -47,6 +80,23 @@ class TransactionService {
                 $transaction->walletAccount->update([
                     'balance' => DB::raw('balance ' . $newOperator . ' ' . $transaction->amount),
                 ]);
+
+                if ($transaction->type === TransactionTypes::TYPE_EXPENSE && $transaction->walletAccount->type === WalletAccountTypes::TYPE_CREDIT) {
+                    $attribute = WalletAccountAttribute::where('wallet_account_id', $transaction->wallet_account_id)
+                        ->where('key', WalletAccountAttributeTypes::CREDIT_STATEMENT_AMOUNT)
+                        ->first();
+
+                    if (!$attribute) {
+                        WalletAccountAttribute::create([
+                            'wallet_account_id' => $transaction->wallet_account_id,
+                            'key' => WalletAccountAttributeTypes::CREDIT_STATEMENT_AMOUNT,
+                            'value' => $transaction->amount,
+                        ]);
+                    } else {
+                        $attribute->value += $transaction->amount;
+                        $attribute->save();
+                    }
+                }
             });
         });
     }

@@ -27,6 +27,11 @@ class WalletAccount extends Model
         return $this->hasMany(Transaction::class);
     }
 
+    public function walletAccountAttributes()
+    {
+        return $this->hasMany(WalletAccountAttribute::class);
+    }
+
     /***** Mutator and Accessor ******/
     public function typeName(): Attribute {
         return Attribute::make(

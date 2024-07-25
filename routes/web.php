@@ -24,6 +24,7 @@ Route::middleware('auth')->group(function() {
 
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
+    Route::patch('wallets/credit-payment', [WalletController::class, 'creditPayment'])->name('wallets.credit_payment');
     Route::resource('wallets', WalletController::class);
 
     Route::get('/transactions/load', [TransactionController::class, 'loadData'])->name('transactions.load');

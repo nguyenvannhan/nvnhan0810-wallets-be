@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Wallet\CreateWalletRequest;
 use App\Http\Requests\Wallet\UpdateWalletRequest;
+use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Models\WalletAccountAttribute;
 use App\Services\WalletService;
+use App\Types\TransactionTypes;
 use App\Types\WalletAccountTypes;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class WalletController extends Controller
@@ -82,5 +87,37 @@ class WalletController extends Controller
         $this->walletService->updateWallet($wallet, $request->validated());
 
         return redirect()->route('wallets.show', $wallet->id);
+    }
+
+    public function creditPayment(Request $request)
+    {
+        $request->validate([
+            'statement_id' => 'required|exists:wallet_account_attributes,id',
+        ]);
+
+        $statement = WalletAccountAttribute::find($request->statement_id);
+        $walletAccount = $statement->walletAccount;
+
+        if ($walletAccount->type !== WalletAccountTypes::TYPE_CREDIT) {
+            throw new Exception('Wallet account is not credit');
+        }
+
+        DB::transaction(function () use ($walletAccount, $statement) {
+            Transaction::create([
+                'wallet_account_id' => $walletAccount->id,
+                'type' => TransactionTypes::TYPE_INCOME,
+                'amount' => $statement->value,
+                'description' => 'Thanh toán sao kê thẻ tín dụng ngày ' . now()->format('d/m/Y'),
+            ]);
+
+            $walletAccount->update([
+                'balance' => DB::raw('balance + ' . $statement->value),
+            ]);
+
+            $statement->value = 0;
+            $statement->save();
+        });
+
+        return redirect()->route('wallets.show', $walletAccount->wallet_id);
     }
 }

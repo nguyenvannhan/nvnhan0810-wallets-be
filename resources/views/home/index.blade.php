@@ -10,6 +10,10 @@
         </div>
     @endif
 
+    @if($statements->isNotEmpty())
+        @include('home.components.statements')
+    @endif
+
     @include('home.components.latest-transactions')
 </div>
 @endsection
