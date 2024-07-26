@@ -110,7 +110,7 @@ class InstallmentController extends Controller
             }
 
             $defaultWalletAccount = WalletAccount::where('type', '<>', WalletAccountTypes::TYPE_CREDIT)
-            ->first();
+                ->first();
 
             $transaction = Transaction::create([
                 'type' => TransactionTypes::TYPE_EXPENSE,
