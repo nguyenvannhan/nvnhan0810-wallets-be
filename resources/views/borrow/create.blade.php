@@ -93,7 +93,7 @@
         const accounts = wallets.find((wallet) => parseInt(wallet.id) === parseInt(walletId)).wallet_accounts;
 
         const optionsHtml = accounts.map((account) => {
-            return `<option value="${account.id}">${waleltAccountNames[account.type]['name'] ?? waleltAccountNames['default']['name']}</option>`;
+            return `<option value="${account.id}">${account?.name ?? waleltAccountNames[account.type]['name'] ?? waleltAccountNames['default']['name']}</option>`;
         });
 
         document.getElementById('wallet-account-select').innerHTML = optionsHtml;
