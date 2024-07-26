@@ -27,7 +27,7 @@ class BorrowTransactionService {
                     'friend_id' => $data['friend_id'] ?? null,
                 ]);
             } else {
-                $borrow->amount += ($data['type'] === BorrowTransactionTypes::TYPE_BORROW ? 1 : -1) * $data['amount'];
+                $borrow->amount += $data['amount'];
                 $borrow->transaction_date = $data['transaction_date'];
                 $borrow->save();
             }
