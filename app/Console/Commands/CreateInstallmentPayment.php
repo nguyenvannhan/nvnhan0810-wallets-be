@@ -47,7 +47,7 @@ class CreateInstallmentPayment extends Command
                 });
             })->first();
 
-            if ($transaction || Carbon::create($installment->next_paid_date)->startOfDay()->diffInDays(now()->startOfDay()) > -14) {
+            if ($transaction || Carbon::create($installment->next_paid_date)->startOfDay()->diffInDays(now()->startOfDay()) < -14) {
                 continue;
             }
 
