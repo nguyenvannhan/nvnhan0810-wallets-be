@@ -91,22 +91,30 @@ class InstallmentController extends Controller
         DB::transaction(function() use ($id) {
             $installment = InstallmentTransaction::findOrFail($id);
 
-            $transactions = Transaction::with(['transactionAttributes'])
-            ->whereHas('transactionAttributes', function ($attributeQuery) use ($installment) {
-                $attributeQuery->where(function ($query) use ($installment) {
-                    $query->where('key', TransactionAttributeTypes::INSTALLMENT_ID)
-                        ->where('value', $installment->id);
-                })->where(function ($query) {
-                    $query->where('type', TransactionAttributeTypes::INSTALLMENT_PAID_STATUS)
-                        ->where('value', false);
-                });
-            })
-            ->get();
+            $transactions = Transaction::with(['transactionAttributes'])->get();
+
+            $transactions = $transactions->filter(function($item) use ($installment) {
+                $idAttrObj = $item->transactionAttributes->where('key', TransactionAttributeTypes::INSTALLMENT_ID)->first();
+
+                if ($idAttrObj?->value != $installment->id) {
+                    return false;
+                }
+
+                $idAttrObj = $item->transactionAttributes->where('key', TransactionAttributeTypes::INSTALLMENT_PAID_DATE)->first();
+                if ($idAttrObj?->value != $installment->next_paid_date) {
+                    return false;
+                }
+
+                $statusObj = $item->transactionAttributes->where('key', TransactionAttributeTypes::INSTALLMENT_PAID_STATUS)->first();
+                if ($statusObj?->value) {
+                    return false;
+                }
+
+                return true;
+            });
 
             if ($transactions->isNotEmpty()) {
-                throw ValidationException::withMessages([
-                    'error' => 'Khoản trả góp này có giao dịch chưa thanh toán',
-                ]);
+                return back()->withErrors(['Khoản trả góp này có giao dịch chưa thanh toán']);
             }
 
             $defaultWalletAccount = WalletAccount::where('type', '<>', WalletAccountTypes::TYPE_CREDIT)
@@ -135,6 +143,6 @@ class InstallmentController extends Controller
             ]);
         });
 
-        return redirect()->route('installments.index');
+        return redirect()->route('installments.index')->with('create-transaction-success', true);
     }
 }
