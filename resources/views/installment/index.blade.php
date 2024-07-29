@@ -44,7 +44,7 @@
         </div>
 
         <div class="list flex flex-column gap-2">
-            @foreach($installments as $transaction)
+            @foreach($installments->sortBy('next_paid_date') as $transaction)
             <div class="bg-white">
                 <div class="d-flex justify-content-between align-items-center p-3 text-decoration-none">
                     <div class="d-flex flex-column gap-2">
