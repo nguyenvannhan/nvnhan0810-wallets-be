@@ -80,10 +80,6 @@ class WalletController extends Controller
     {
         $accounts = collect($request->accounts)->pluck('type');
 
-        if ($accounts->count() !== $accounts->unique()->count()) {
-            throw ValidationException::withMessages(['Account types must be unique']);
-        }
-
         $this->walletService->updateWallet($wallet, $request->validated());
 
         return redirect()->route('wallets.show', $wallet->id);
