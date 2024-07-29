@@ -78,8 +78,6 @@ class WalletController extends Controller
 
     public function update(Wallet $wallet, UpdateWalletRequest $request)
     {
-        $accounts = collect($request->accounts)->pluck('type');
-
         $this->walletService->updateWallet($wallet, $request->validated());
 
         return redirect()->route('wallets.show', $wallet->id);
