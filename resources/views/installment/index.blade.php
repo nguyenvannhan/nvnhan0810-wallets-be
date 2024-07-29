@@ -29,10 +29,18 @@
             $total = $installments->reduce(function ($result, $installment) {
                 return $result + ($installment->monthly_amount * $installment->remain_months);
             }, 0);
+
+            $totalMonthly = $installments->reduce(function ($result, $installment) {
+                return $result + $installment->monthly_amount;
+            }, 0);
         @endphp
 
         <div class="mb-4 bg-white text-center text-danger py-4 fs-2 fw-bold">
             {{ '-' . number_format($total) . ' VNĐ' }}
+        </div>
+
+        <div class="mb-4 bg-white text-center text-danger py-4 fs-2 fw-bold">
+            {{ '-' . number_format($totalMonthly) . ' VNĐ' }}
         </div>
 
         <div class="list flex flex-column gap-2">
