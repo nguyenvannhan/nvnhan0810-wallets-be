@@ -16,15 +16,15 @@ pipeline {
                 sh 'sed -i "s/GOOGLE_CLIENT_ID=example/GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID_CRED/g" .env'
                 sh 'sed -i "s/GOOGLE_SECRET=example/GOOGLE_SECRET=$GOOGLE_CLIENT_SECRET_CRED/g" .env'
 
-                sh 'zip -r /var/lib/jenkins/wallets-be.nvnhan0810.com-zip.zip .'
+                sh 'zip -r /var/lib/jenkins/wallets-api.nvnhan0810.com-zip.zip .'
 
                 sshagent (credentials: ['Azdigi-VPS-SSH']) {
-                    sh 'ssh -o StrictHostKeyChecking=no root@116.118.49.239 \"rm -rf /var/www/html/wallets-be.nvnhan0810.com-zip.zip && mv /var/lib/jenkins/wallets-be.nvnhan0810.com-zip.zip /var/www/html/\"'
-                    sh 'ssh -o StrictHostKeyChecking=no root@116.118.49.239 \"rm -rf /var/www/html/wallets-be.nvnhan0810.com-zip && mkdir /var/www/html/wallets-be.nvnhan0810.com-zip\"'
-                    sh 'ssh -o StrictHostKeyChecking=no root@116.118.49.239 \"cd /var/www/html/ && unzip wallets-be.nvnhan0810.com-zip -d wallets-be.nvnhan0810.com-zip\"'
-                    sh 'ssh -o StrictHostKeyChecking=no root@116.118.49.239 \"cd /var/www/html/ && rm -rf wallets-be.nvnhan0810.com/\"'
-                    sh 'ssh -o StrictHostKeyChecking=no root@116.118.49.239 \"cd /var/www/html/ && cp -rTf wallets-be.nvnhan0810.com-zip wallets-be.nvnhan0810.com\"'
-                    sh 'ssh -o StrictHostKeyChecking=no root@116.118.49.239 \"cd /var/www/html/wallets-be.nvnhan0810.com && sh deploy/build.sh\"'
+                    sh 'ssh -o StrictHostKeyChecking=no root@116.118.49.239 \"rm -rf /var/www/html/wallets-api.nvnhan0810.com-zip.zip && mv /var/lib/jenkins/wallets-api.nvnhan0810.com-zip.zip /var/www/html/\"'
+                    sh 'ssh -o StrictHostKeyChecking=no root@116.118.49.239 \"rm -rf /var/www/html/wallets-api.nvnhan0810.com-zip && mkdir /var/www/html/wallets-api.nvnhan0810.com-zip\"'
+                    sh 'ssh -o StrictHostKeyChecking=no root@116.118.49.239 \"cd /var/www/html/ && unzip wallets-api.nvnhan0810.com-zip -d wallets-api.nvnhan0810.com-zip\"'
+                    sh 'ssh -o StrictHostKeyChecking=no root@116.118.49.239 \"cd /var/www/html/ && rm -rf wallets-api.nvnhan0810.com/\"'
+                    sh 'ssh -o StrictHostKeyChecking=no root@116.118.49.239 \"cd /var/www/html/ && cp -rTf wallets-api.nvnhan0810.com-zip wallets-api.nvnhan0810.com\"'
+                    sh 'ssh -o StrictHostKeyChecking=no root@116.118.49.239 \"cd /var/www/html/wallets-api.nvnhan0810.com && sh deploy/build.sh\"'
                 }
             }
         }
@@ -32,9 +32,9 @@ pipeline {
         stage('Deploy') {
             steps {
                 sshagent (credentials: ['Azdigi-VPS-SSH']) {
-                    sh 'ssh -o StrictHostKeyChecking=no root@116.118.49.239 \"cd /var/www/html/wallets-be.nvnhan0810.com && sudo chown nginx:nginx -R /var/www/html/wallets-be.nvnhan0810.com\"'
-                    sh 'ssh -o StrictHostKeyChecking=no root@116.118.49.239 \"cd /var/www/html/wallets-be.nvnhan0810.com && sudo systemctl reload nginx\"'
-                    sh 'ssh -o StrictHostKeyChecking=no root@116.118.49.239 \"cd /var/www/html/ && sudo rm -rf wallets-be.nvnhan0810.com-zip*\"'
+                    sh 'ssh -o StrictHostKeyChecking=no root@116.118.49.239 \"cd /var/www/html/wallets-api.nvnhan0810.com && sudo chown nginx:nginx -R /var/www/html/wallets-api.nvnhan0810.com\"'
+                    sh 'ssh -o StrictHostKeyChecking=no root@116.118.49.239 \"cd /var/www/html/wallets-api.nvnhan0810.com && sudo systemctl reload nginx\"'
+                    sh 'ssh -o StrictHostKeyChecking=no root@116.118.49.239 \"cd /var/www/html/ && sudo rm -rf wallets-api.nvnhan0810.com-zip*\"'
                 }
             }
         }
