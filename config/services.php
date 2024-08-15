@@ -39,4 +39,8 @@ return [
         'client_secret' => env('GOOGLE_SECRET'),
         'redirect' => env('GOOGLE_REDIRECT_URL'),
     ],
+
+    "auth" => [
+        'verify_url' => env('AUTH_VERIFY_URL', 'https://accounts.nvnhan0810.com/api/user'),
+    ]
 ];

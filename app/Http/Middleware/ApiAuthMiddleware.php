@@ -25,17 +25,13 @@ class ApiAuthMiddleware
             ], 401);
         }
 
-        $response = Http::withToken($token)->get('https://accounts.nvnhan0810.com/api/user');
+        $response = Http::withToken($token)->get(config('auth.verify_url'));
 
         if (!$response->ok()) {
             return response()->json([
                 'message' => 'Unauthorized',
             ], 401);
         }
-
-        Log::info('test', [
-            'json' => $response->json(),
-        ]);
 
         $request->merge([
             'user' => $response->json(),
