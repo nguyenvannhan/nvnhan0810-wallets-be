@@ -25,7 +25,7 @@ class ApiAuthMiddleware
             ], 401);
         }
 
-        $response = Http::withToken($token)->get(config('auth.verify_url'));
+        $response = Http::withToken($token)->get(config('services.auth.verify_url'));
 
         if (!$response->ok()) {
             return response()->json([
